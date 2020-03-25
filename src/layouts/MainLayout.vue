@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header>
+    <q-header flat class="bg-dark">
       <q-toolbar>
         <q-btn
           flat
@@ -16,46 +16,46 @@
         <div class="text-subtitle2">
           A Quassar-Vue Framework App.
         </div>
-        <div class="text-subtitle2">{{ todaysDate }}</div>
       </div>
-      <q-img src="statics/heroes.jpg" class="headder-image absolute-top" />
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       :width="250"
-      :breakpoint="600"
+      :breakpoint="400"
     >
       <q-scroll-area
-        style="height: calc(100% - 206px); margin-top: 206px; border-right: 1px solid #ddd"
+        style="height: calc(100% - 185px); margin-top: 185px; border-right: 1px solid #ddd"
       >
         <q-list padding>
-          <q-item-label header class="text-grey-8">
+          <q-item-label header>
             Essential Links
           </q-item-label>
 
           <EssentialLink
-            v-for="link in essentialLinks"
-            :key="link.title"
-            v-bind="link"
+            v-for="linkObj in essentialLinks"
+            :key="linkObj.title"
+            v-bind="linkObj"
           />
-          <q-item-label header class="text-grey-8">
+
+          <q-separator />
+
+          <q-item-label header>
             Menu
           </q-item-label>
 
-          <StandardLink
-            v-for="link in standardLinks"
-            :key="link.title"
-            v-bind="link"
-          />
+          <div v-for="linkObj in standardLinks" :key="linkObj.title">
+            <q-separator v-if="linkObj.separator" />
+            <StandardLink v-bind="linkObj" />
+          </div>
         </q-list>
       </q-scroll-area>
 
       <q-img
-        class="absolute-top"
-        src="statics/heroes.jpg"
-        style="height: 206px"
+        class="absolute-top avatar-image"
+        src="statics/black-square.jpg"
+        style="height: 185px"
       >
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
@@ -66,6 +66,8 @@
         </div>
       </q-img>
     </q-drawer>
+
+    <!-- <div class="text-subtitle2">{{ todaysDate }}</div> -->
 
     <q-page-container>
       <keep-alive>
@@ -96,25 +98,29 @@ export default {
           title: "Github",
           caption: "/michaelwybraniec",
           icon: "code",
-          link: "https://github.com/michaelwybraniec"
+          link: "https://github.com/michaelwybraniec",
+          separator: true
         }
       ],
       standardLinks: [
         {
           title: "Search",
           icon: "search",
-          link: "/"
+          link: "/",
+          separator: false
         },
         {
           title: "Favorites",
           icon: "favorite",
-          link: "/favorites"
-        },
-        {
-          title: "Help",
-          icon: "help",
-          link: "/help"
+          link: "/favorites",
+          separator: false
         }
+        // {
+        //   title: "Help",
+        //   icon: "help",
+        //   link: "/help",
+        //   separator: true
+        // }
       ]
     };
   },
@@ -128,10 +134,8 @@ export default {
 </script>
 
 <style lang="scss">
-.headder-image {
+.avatar-image {
   height: 100%;
   z-index: -1;
-  opacity: 0.2;
-  filter: grayscale(100%);
 }
 </style>
