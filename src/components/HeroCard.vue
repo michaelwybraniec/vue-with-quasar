@@ -1,46 +1,52 @@
 <template>
-  <div class="justify-center q-pl-sm q-pb-sm">
+  <div class="justify-center q-pl-md q-pb-md">
     <q-card>
       <q-card-section>
-        <div class="text-bold q-mb-xs">
-          {{ this.clonedHero.name }}
+        <div class="text-bold text-center q-mb-xs">
+          {{ this.hero.name }}
         </div>
         <div class="row no-wrap items-center">
-          <q-rating size="15px" v-model="stars" :max="5" color="primary" />
-          <span class="text-caption text-grey q-ml-sm">4.2 (551)</span>
+          <q-rating
+            size="25px"
+            v-model="stars.rounded"
+            :max="6"
+            color="primary"
+          />
+          <span class=" text-grey q-ml-sm q-mt-sm">{{ stars.precise }}</span>
         </div>
       </q-card-section>
-
-      <q-img :src="this.pic" style="height: 250px; max-width: 400px">
+      <q-img :src="this.hero.image.url" style="height: 250px; max-width: 400px">
         <template v-slot:loading>
           <div class="text-subtitle1 text-white">
             Loading...
           </div>
         </template>
       </q-img>
-
       <q-card-actions>
         <q-btn
           icon="favorite"
-          :color="this.favorite.color"
-          @click="onAddToFavorites()"
+          :color="
+            this.hero.favorite
+              ? 'negative'
+              : this.favorite.status
+              ? 'negative'
+              : 'primary'
+          "
+          @click="onAddRemoveFavHero()"
         />
         <q-btn icon="visibility" color="primary" @click="heroDetails = true" />
       </q-card-actions>
     </q-card>
-
     <q-dialog full-width v-model="heroDetails">
       <q-card>
         <q-card-section>
           <div class="text-h6">
-            {{ this.clonedHero.name }}
+            {{ this.hero.name }}
           </div>
         </q-card-section>
-
         <q-card-section class="q-pt-none">
           <HeroDetails :hero="hero" />
         </q-card-section>
-
         <q-card-actions align="right">
           <q-btn flat label="OK" color="primary" v-close-popup />
         </q-card-actions>
@@ -69,8 +75,10 @@ export default {
   },
   data() {
     return {
-      stars: 3,
-      clonedHero: {},
+      stars: {
+        rounded: 0,
+        precise: 0
+      },
       heroDetails: false,
       expanded: false,
       favorite: {
@@ -88,37 +96,34 @@ export default {
       }
     };
   },
-  async mounted() {
-    await this.cloneHero();
+  watch: {
+    loadStars(newStars) {
+      this.stars = newStars;
+    }
+  },
+  computed: {
+    loadStars() {
+      return this.getStars();
+    }
   },
   methods: {
-    async cloneHero() {
-      this.clonedHero = { ...this.hero };
-      console.log("cloneHero", this.clonedHero.name, this.clonedHero);
-      this.favorite.status = this.clonedHero.liked;
-      this.pic = this.clonedHero.image.url;
-      this.favorite.color = this.clonedHero.liked ? "negative" : "primary";
-      // if (this.clonedHero.liked) this.favorite.color = "success";
-      // else this.favorite.color = "light";
+    getStars() {
+      let starValue = 100 / 6;
+      let total = 0;
+      for (let power in this.hero.powerstats) {
+        let value = this.hero.powerstats[power];
+        let average = isNaN(value) ? 0 : value / starValue;
+        total += average;
+      }
+      this.stars.rounded = Math.round(total / 6);
+      this.stars.precise = (total / 6).toFixed(2);
     },
-    loadPicture() {},
-    onAddToFavorites() {
+    onAddRemoveFavHero() {
       this.favorite.status = !this.favorite.status;
-      if (this.favorite.status) this.favorite.color = "negative";
-      else this.favorite.color = "primary";
-      store.dispatch("addFavoriteHero", this.clonedHero);
-    },
-    onEdit() {
-      this.edit = !this.edit;
+      store.dispatch("addRemoveFavHero", { ...this.hero });
     },
     onDetails() {
       this.details = !this.details;
-    },
-    cancelHero() {
-      this.$emit("cancel");
-    },
-    async saveHero() {
-      this.$emit("save", this.clonedHero);
     }
   }
 };

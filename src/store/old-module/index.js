@@ -3,7 +3,7 @@ import 'es6-promise/auto'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { API } from '../../shared/config'
-import { ADD_HERO, CLEAR_HERO, API_ERROR, ADD_FAVORITE_HERO } from './mutation-types'
+import { ADD_HERO, CLEAR_HERO, API_ERROR, ADD_REMOVE_FAV_HERO } from './mutation-types'
 
 Vue.use(Vuex)
 
@@ -27,13 +27,15 @@ const mutations = {
   [API_ERROR] (state, error) {
     state.api_error = error
   },
-  [ADD_FAVORITE_HERO] (state, favoriteHero) {
+  [ADD_REMOVE_FAV_HERO] (state, favoriteHero) {
     function remove (array, element) {
       return array.filter(el => el.id !== element.id);
     }
     const matchingHero = state.favorite_heroes.find(h => h.id === favoriteHero.id)
-    if (!matchingHero) state.favorite_heroes.push(favoriteHero)
-    else state.favorite_heroes = remove(state.favorite_heroes, favoriteHero)
+    if (!matchingHero) {
+      favoriteHero.favorite = true
+      state.favorite_heroes.push(favoriteHero)
+    } else state.favorite_heroes = remove(state.favorite_heroes, favoriteHero)
   }
 }
 
@@ -43,12 +45,19 @@ const actions = {
     const reqByNameUrl = `${herokuCors}/${url}/${key}/search/${input}`
     const reqByIdUrl = `${herokuCors}/${url}/${key}/${input}`
     try {
+
       const heroById = await axios.get(reqByIdUrl)
+      const favoriteHero = this.state.favorite_heroes.find(h => {
+        if (h.id === heroById.data.id) return true
+        else false
+      })
+
       if (!heroById.data.error) {
         if (heroById.data.response === 'error') {
           context.commit(API_ERROR, heroById.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
+          heroById.data.favorite = !!favoriteHero
           context.commit(API_ERROR, undefined)
           context.commit(ADD_HERO, heroById.data)
         }
@@ -58,6 +67,7 @@ const actions = {
           context.commit(API_ERROR, heroByName.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
+          heroById.data.favorite = !!favoriteHero
           context.commit(API_ERROR, undefined)
           context.commit(ADD_HERO, heroByName.data.results)
         }
@@ -73,12 +83,12 @@ const actions = {
   clearHeroAction (context) {
     context.commit(CLEAR_HERO, undefined)
   },
-  addFavoriteHero (context, heroId) {
+  addRemoveFavHero (context, heroId) {
     const heroFound = context.state.favorite_heroes.find(h => {
       h.id === heroId
     })
-    if (!heroFound) context.commit(ADD_FAVORITE_HERO, heroId)
-    else console.warn("addFavoriteHero: HERO EXISTS!")
+    if (!heroFound) context.commit(ADD_REMOVE_FAV_HERO, heroId)
+    else console.warn("addRemoveFavHero: HERO EXISTS!")
   }
 }
 
@@ -86,7 +96,6 @@ const getters = {
   getAvailableHero: state => state.hero,
   getApiErrorMsg: state => state.api_error,
   getFavoriteHeroes: state => state.favorite_heroes
-
 }
 
 export default new Vuex.Store({

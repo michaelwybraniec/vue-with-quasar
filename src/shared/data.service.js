@@ -4,12 +4,12 @@
 import axios from "axios";
 import { API } from "./config";
 
-const getHero = async id => {
+const get = async id => {
   const { herokuCors, url, key } = API.heroes;
   const request = `${herokuCors}/${url}/${key}/${id}`;
   await axios.get(request)
     .then(res => {
-      console.log("data.service, response:", res)
+      // console.log("data.service, response:", res)
       return res.data
     })
     .catch(err => {
@@ -19,10 +19,10 @@ const getHero = async id => {
 };
 
 const jsonToTable = (data) => {
-  console.log("jsonToTable", data)
+  console.log("jsonToTable() to convert data to table quasar", data)
 }
 
 export const dataService = {
-  getHero,
+  get,
   jsonToTable
 };

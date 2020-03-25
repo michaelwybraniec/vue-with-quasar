@@ -13,7 +13,7 @@ const mutations = {
   [API_ERROR] (state, error) {
     state.api_error = error
   },
-  [ADD_FAVORITE_HERO] (state, favoriteHero) {
+  [ADD_ & _REMOVE_FAV_HERO] (state, favoriteHero) {
     function remove (array, element) {
       return array.filter(el => el.id !== element.id);
     }

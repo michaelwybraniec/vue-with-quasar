@@ -119,21 +119,17 @@ export default {
   },
   methods: {
     cloneHero() {
-      // console.log("hero details", hero);
       this.tableData = dataService.jsonToTable({ ...this.hero });
       this.pic = this.hero.image.url;
       this.favorite.status = this.hero.liked;
       if (this.hero.liked) this.favorite.color = "success";
       else this.favorite.color = "light";
     },
-    // loadPicture() {
-    //   this.pic = this.clonedHero.image.url;
-    // },
     onAddToFavorites() {
       this.favorite.status = !this.favorite.status;
       if (this.favorite.status) this.favorite.color = "success";
       else this.favorite.color = "light";
-      store.dispatch("addFavoriteHero", {
+      store.dispatch("addRemoveFavHero", {
         ...this.hero
       });
     },
