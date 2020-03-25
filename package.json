@@ -6,7 +6,7 @@
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "Michael Wybraniec",
-  "private": true,
+  "private": false,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
