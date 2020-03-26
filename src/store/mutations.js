@@ -23,6 +23,6 @@ const mutations = {
   }
 }
 
-export function mutations (/* state */) {
-  mutations
-}
+// export function mutations (/* state */) {
+//   mutations
+// }
