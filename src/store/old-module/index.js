@@ -42,8 +42,8 @@ const mutations = {
 const actions = {
   async getHeroAction (context, input) {
     const { herokuCors, url, key } = API.heroes
-    let reqByNameUrl = `${herokuCors}/${url}/${key}/search/${input}`
-    let reqByIdUrl = `${herokuCors}/${url}/${key}/${input}`
+    const reqByNameUrl = `${herokuCors}/${url}/${key}/search/${input}`
+    const reqByIdUrl = `${herokuCors}/${url}/${key}/${input}`
     // reqByNameUrl = `${url}/${key}/search/${input}`
     // reqByIdUrl = `${url}/${key}/${input}`
     const favoriteHero = (heroId) => {
