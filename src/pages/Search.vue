@@ -14,19 +14,17 @@
           v-model="input.search"
           hint="Name or ID"
           label="Search"
-          :rules="[
-            val => !!val || '* Required',
-            val => val.length >= 1 || 'Min 1 character required'
-          ]"
+          :rules="[val => val.length < 20 || 'Max 20 character allowed.']"
           lazy-rules
         >
           <template v-slot:after>
             <q-btn
+              v-if="input.search"
               :loading="buttons.search.loading"
               :disable="buttons.search.loading"
-              round
               :color="buttons.search.color"
               icon="search"
+              label="Search"
               unelevated
               @click="onSubmit()"
             />
@@ -34,6 +32,7 @@
         </q-input>
       </form>
     </div>
+
     <div v-if="!loading && hero">
       <div v-if="hero.response !== 'success'">
         <div class="row justify-center  q-mt-lg">
@@ -48,14 +47,15 @@
         </div>
       </div>
     </div>
-    <div v-if="apiError" class="no-hero absolute-center">
-      <div class=" bg-negative text-h6 text-center text-white ">
+    <div v-if="apiError" class="no-hero absolute-center ">
+      <div class="bg-negative text-h6 text-center text-white">
         <div>
           <p v-if="apiError">
-            API err: <span class="bg-dark q-pa-sm q-ml-sm">{{ apiError }}</span>
+            API err:
+            <span class="bg-dark q-pa-sm q-ml-sm">{{ apiError }}</span>
           </p>
-          <p v-if="this.message.error">
-            Customized err:
+          <p v-if="this.message.error" class="g-ml-sm">
+            &nbsp;&nbsp;Customized err:
             <span class="bg-dark q-pa-sm q-ml-sm">{{
               this.message.error
             }}</span>
@@ -152,12 +152,18 @@ export default {
         }
       }
     }
+  },
+  colorize() {
+    let color = setInterval(function() {
+      "#" + (((1 << 24) * Math.random()) | 0).toString(16);
+    }, 500);
+    return color;
   }
 };
 </script>
 
 <style lang="scss">
 .no-hero {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 </style>

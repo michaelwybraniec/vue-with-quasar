@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import 'es6-promise/auto'
+// import 'es6-promise/auto'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { API } from '../../shared/config'
@@ -44,20 +44,20 @@ const actions = {
     const { herokuCors, url, key } = API.heroes
     const reqByNameUrl = `${herokuCors}/${url}/${key}/search/${input}`
     const reqByIdUrl = `${herokuCors}/${url}/${key}/${input}`
-    try {
-
-      const heroById = await axios.get(reqByIdUrl)
-      const favoriteHero = this.state.favorite_heroes.find(h => {
-        if (h.id === heroById.data.id) return true
+    const favoriteHero = (heroId) => {
+      return this.state.favorite_heroes.find(h => {
+        if (h.id === heroId) return true
         else false
       })
-
+    }
+    try {
+      const heroById = await axios.get(reqByIdUrl)
       if (!heroById.data.error) {
         if (heroById.data.response === 'error') {
           context.commit(API_ERROR, heroById.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
-          heroById.data.favorite = !!favoriteHero
+          heroById.data.favorite = !!favoriteHero(heroById.data.id)
           context.commit(API_ERROR, undefined)
           context.commit(ADD_HERO, heroById.data)
         }
@@ -67,7 +67,10 @@ const actions = {
           context.commit(API_ERROR, heroByName.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
-          heroById.data.favorite = !!favoriteHero
+          console.log("heroByName", heroByName)
+          heroByName.data.results.forEach(h => {
+            h.favorite = !!favoriteHero(h.id)
+          })
           context.commit(API_ERROR, undefined)
           context.commit(ADD_HERO, heroByName.data.results)
         }
