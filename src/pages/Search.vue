@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-lg bg-grey-2">
-    <div class="q-pt-sm" style="col">
+    <div v-if="!loading" class="q-pt-sm" style="col">
       <form
         @submit.prevent.stop="onSubmit"
         @reset.prevent.stop="onReset"
@@ -33,9 +33,9 @@
       </form>
     </div>
 
-    <div v-if="!loading && hero">
+    <div v-if="hero && !loading">
       <div v-if="hero.response !== 'success'">
-        <div class="row justify-center  q-mt-lg">
+        <div class="row justify-center q-mt-lg">
           <div v-for="(hero, index) in hero" v-bind:key="index + hero">
             <HeroCard :hero="hero" />
           </div>
@@ -47,7 +47,14 @@
         </div>
       </div>
     </div>
-    <div v-if="apiError" class="no-hero absolute-center ">
+
+    <div v-if="loading" class="no-hero absolute-center ">
+      <div class="text-h2 text-center">
+        <q-spinner color="primary" size="3em" :thickness="2" />
+      </div>
+    </div>
+
+    <div v-if="apiError && !loading" class="no-hero absolute-center ">
       <div class="bg-negative text-h6 text-center text-white">
         <div>
           <p v-if="apiError">
@@ -99,10 +106,10 @@ export default {
     };
   },
   watch: {
-    favoriteHeroes(newFav) {
-      this.favorites.data = newFav;
-      this.favorites.length = newFav.length;
-    },
+    // favoriteHeroes(newFav) {
+    //   this.favorites.data = newFav;
+
+    // },
     apiError(errNew) {
       switch (errNew) {
         case "access denied":
@@ -118,9 +125,9 @@ export default {
     }
   },
   computed: {
-    favoriteHeroes() {
-      return store.getters.getFavoriteHeroes;
-    },
+    // favoriteHeroes() {
+    //   return store.getters.getFavoriteHeroes;
+    // },
     hero() {
       return store.getters.getAvailableHero;
     },
@@ -152,12 +159,6 @@ export default {
         }
       }
     }
-  },
-  colorize() {
-    let color = setInterval(function() {
-      "#" + (((1 << 24) * Math.random()) | 0).toString(16);
-    }, 500);
-    return color;
   }
 };
 </script>

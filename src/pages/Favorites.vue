@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-lg bg-grey-2">
     <div v-if="this.heroes.data">
-      <div class="row justify-center  q-mt-lg">
+      <div class="row justify-center q-mt-lg">
         <div v-for="(hero, index) in heroes.data" v-bind:key="index + hero">
           <HeroCard :hero="hero" />
         </div>
