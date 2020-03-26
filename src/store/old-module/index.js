@@ -44,8 +44,8 @@ const actions = {
     const { herokuCors, url, key } = API.heroes
     let reqByNameUrl = `${herokuCors}/${url}/${key}/search/${input}`
     let reqByIdUrl = `${herokuCors}/${url}/${key}/${input}`
-    reqByNameUrl = `${url}/${key}/search/${input}`
-    reqByIdUrl = `${url}/${key}/${input}`
+    // reqByNameUrl = `${url}/${key}/search/${input}`
+    // reqByIdUrl = `${url}/${key}/${input}`
     const favoriteHero = (heroId) => {
       return this.state.favorite_heroes.find(h => {
         if (h.id === heroId) return true
