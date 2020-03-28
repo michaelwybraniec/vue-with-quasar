@@ -7,22 +7,11 @@
         </div>
       </div>
     </div>
-    <div
-      v-if="!this.heroes.data.length"
-      class="no-favorite-heroes absolute-center"
-    >
+
+    <div v-if="!this.heroes.data.length" class="no-favorite-heroes absolute-center">
       <div class="text-h6 text-primary text-center">
         Click
-        <q-btn
-          class="q-ml-sm q-mr-sm"
-          color="primary"
-          unelevated
-          icon="search"
-          to="/"
-        >
-          Search
-        </q-btn>
-        to keep your first hero!
+        <q-btn class="q-ml-sm q-mr-sm" color="primary" unelevated icon="search" to="/">Search</q-btn>to keep your first hero!
       </div>
     </div>
   </q-page>
@@ -64,7 +53,6 @@ export default {
 
 <style lang="scss">
 .my-card {
-  width: 80%;
   height: 10px;
   max-width: 350px;
 }
