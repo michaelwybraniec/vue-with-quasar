@@ -4,15 +4,24 @@
       class="justify-center"
       :style="
         this.hero.favorite
-          ? 'background-color: gray; border: solid 0.12rem gray; border-radius: 5px;'
-          : 'border: solid 0.12rem white; border-radius: 5px;'
+          ? 'background-color: gray; border: solid 0.15rem #1f4d7a; border-radius: 5px;'
+          : 'border: solid 0.15rem white; border-radius: 5px;;'
       "
     >
       <q-card>
         <q-card-section>
           <div class="text-bold text-center q-mb-xs">{{ this.hero.name }}</div>
           <div class="row no-wrap items-center">
-            <q-rating size="25px" v-model="stars.rounded" :max="6" color="primary" />
+            <q-rating
+              size="25px"
+              v-model="stars.precise"
+              readonly
+              :max="6"
+              color="primary"
+              icon="star_border"
+              icon-selected="star"
+              icon-half="star_half"
+            />
             <span class="text-grey q-ml-sm q-mt-sm">{{ stars.precise }}</span>
           </div>
         </q-card-section>
