@@ -65,7 +65,7 @@
               <div class="col-12 text-center flex flex-center">
                 <q-pagination
                   v-model="pagination.currentPage"
-                  :max="this.pagination.chunkedHeroes.length"
+                  :max="this.pagination.chunkedHeroes.length -1"
                   :input="true"
                 ></q-pagination>
               </div>
