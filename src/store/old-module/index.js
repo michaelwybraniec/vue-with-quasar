@@ -71,7 +71,6 @@ const actions = {
           context.commit(API_ERROR, heroByName.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
-          console.log("heroByName", heroByName)
           heroByName.data.results.forEach(h => {
             h.favorite = !!favoriteHero(h.id)
           })

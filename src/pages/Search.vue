@@ -25,7 +25,7 @@
             label-color="primary"
             options-selected-class="text-deep-primary bg-info"
             @filter="filterFn"
-            @new-value="submitSearch"
+            @new-value="newValue"
           >
             <template v-slot:no-option>
               <q-item>
@@ -48,16 +48,45 @@
       </div>
     </div>
     <div v-if="hero && !loading">
-      <div v-if="hero.response !== 'success'">
+      <div v-if="hero.response !== 'success' && hero.length !== 1">
+        <div v-if="hero.length" class="row flex flex-center">
+          <div
+            class="col-4 q-pa-sm flex flex-center"
+            style="background-color: #E8E8E8; border-radius: 5px;"
+          >
+            <div class="row">
+              <div class="col-12 text-center q-pb-sm">
+                Last searched phrase:
+                <b>'{{this.input.previousSearch}}'</b>,
+                heroes found:
+                <b>{{this.hero.length}}</b>
+              </div>
+
+              <div class="col-12 text-center flex flex-center">
+                <q-pagination
+                  v-model="pagination.currentPage"
+                  :max="this.pagination.chunkedHeroes.length"
+                  :input="true"
+                ></q-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row justify-center q-mt-lg">
-          <div v-for="(hero, index) in hero" v-bind:key="index + hero">
+          <div
+            v-for="(hero, index) in this.pagination.chunkedHeroes[this.pagination.currentPage]"
+            v-bind:key="index + hero"
+          >
             <HeroCard :hero="hero" />
           </div>
         </div>
       </div>
       <div v-else>
         <div class="row justify-center q-mt-lg">
-          <HeroCard :hero="hero" />
+          <div style="width: 700px; max-width: 80vw;">
+            <HeroDetails :hero="hero[0]" />
+          </div>
         </div>
       </div>
     </div>
@@ -92,13 +121,13 @@
 <script>
 import store from "../store/old-module/index";
 import HeroCard from "components/HeroCard";
+import HeroDetails from "components/HeroDetails";
+
 import data from "../shared/db.json";
 
 export default {
-  name: "Heroes",
-  components: {
-    HeroCard
-  },
+  name: "Search",
+  components: { HeroCard, HeroDetails },
   data() {
     return {
       search: null,
@@ -119,11 +148,16 @@ export default {
         success: undefined
       },
       input: {
-        search: null
+        search: null,
+        previousSearch: null
       },
       favorites: {
         data: [],
         length: 0
+      },
+      pagination: {
+        currentPage: 1,
+        chunkedHeroes: []
       }
     };
   },
@@ -139,6 +173,13 @@ export default {
           break;
         default:
           this.message.error = errNew;
+      }
+    },
+    hero(newHero) {
+      let index = 0;
+      for (index = 0; index < newHero.length; index += 16) {
+        let myChunk = newHero.slice(index, index + 16);
+        this.pagination.chunkedHeroes.push(myChunk);
       }
     }
   },
@@ -157,6 +198,7 @@ export default {
         this.formHasError = true;
       } else {
         console.log("Input:", this.input.search);
+        this.input.previousSearch = this.input.search;
         if (this.input.search !== "") {
           this.message.info = "Loading...";
           this.loading = true;
@@ -186,7 +228,7 @@ export default {
         }
       });
     },
-    submitSearch(val, done) {
+    newValue(val, done) {
       if (val.length >= 1) {
         if (!this.filter.options.includes(val)) {
           done(val, "add-unique");

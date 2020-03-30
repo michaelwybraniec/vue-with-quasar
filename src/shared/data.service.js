@@ -9,7 +9,6 @@ const get = async id => {
   const request = `${herokuCors}/${url}/${key}/${id}`;
   await axios.get(request)
     .then(res => {
-      // console.log("data.service, response:", res)
       return res.data
     })
     .catch(err => {
