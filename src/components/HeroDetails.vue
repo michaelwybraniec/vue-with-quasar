@@ -1,89 +1,161 @@
 <template>
-  <q-card class="row">
-    <div class="col-sm-4">
-      <q-img :src="this.pic" style="max-height: 700px; max-width: 500px">
-        <template v-slot:loading>
-          <div class="text-subtitle1 text-white">
-            Loading...
-          </div>
-        </template>
-      </q-img>
-    </div>
-
-    <div class="col-sm-8">
-      <!-- <div class="q-pt-md q-pb-md"> -->
-      <div v-for="(value, name, index) in hero" v-bind:key="index + name">
-        <div
-          v-if="
-            index !== 0 &&
-              name !== 'name' &&
-              name !== 'id' &&
-              name !== 'image' &&
-              name !== 'liked'
+  <q-card style=" background-color: #E8E8E8; border-radius: 5px;">
+    <div class="row" style="margin: 6px; margin-top: 10px ">
+      <q-card
+        class="justify-center col q-mt-sm"
+        :style="this.hero.favorite
+          ? 'border: solid 0.12rem #1f4d7a; border-radius: 5px;'
+          : 'border: solid 0.12rem white; border-radius: 5px;'
           "
-          class="row"
+      >
+        <q-img
+          :src="this.hero.image.url"
+          style="
+              height: 300px; 
+              max-width: 318px;
+              border-radius: 5px;
+              margin: 8px
+              "
+          placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
         >
-          <div class="col-4 ">
-            <b>{{ name }}:</b>
-          </div>
+          <template v-slot:loading>
+            <div class="text-subtitle text-white">Loading...</div>
+          </template>
+          <template v-slot:error>
+            <div class="absolute-full flex flex-center bg-primary text-white">No image :-(</div>
+          </template>
 
-          <div class="col-8">
-            <div
-              class="row"
-              v-for="(value, name, index) in value"
-              v-bind:key="index + name"
-            >
-              <div class="col-3">
-                <b>{{ name }}:</b>
-              </div>
+          <q-page-sticky :offset="[230, 0]">
+            <q-btn
+              fab
+              icon="favorite"
+              :color="this.hero.favorite ? 'negative' : 'primary'"
+              @click="onAddRemoveFavHero()"
+            />
+          </q-page-sticky>
+        </q-img>
+      </q-card>
 
-              <div class="col">
-                <div
-                  v-if="typeof value === 'string' || typeof value === 'number'"
-                  class="col-4"
-                >
-                  {{ value }}
-                </div>
-                <div
-                  v-else
-                  v-for="(value, name, index) in value"
-                  v-bind:key="index + value"
-                  class="col pl-3 mr-1"
-                >
-                  <span v-if="typeof value === 'string'">
-                    {{ value }}
-                  </span>
+      <q-card class="col-6 q-mt-sm" style=" margin-left: 8px">
+        <div class="row">
+          <div class="col">
+            <h4
+              class="text-bold text-center"
+              style="margin-block-start: 1.2em; margin-block-end: 0em"
+            >{{ this.hero.name }}</h4>
+            <div class="no-wrap text-center">
+              <q-rating
+                class="items-center"
+                size="25px"
+                v-model="this.stars.rounded"
+                readonly
+                :max="6"
+                color="primary"
+                icon="star_border"
+                icon-selected="star"
+                icon-half="star_half"
+              />
+              <span class="text-grey q-ml-sm q-mt-sm">{{ this.stars.precise }}</span>
+            </div>
+
+            <div style="padding-top: 22px">
+              <div
+                class="col no-wrap items-center"
+                v-for="powerstat in this.powerstats"
+                v-bind:key="powerstat.toString()"
+                style="padding-top: 3px"
+              >
+                <div class="row" v-if="!powerstat.total">
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-4"></div>
+                      <div class="col">{{powerstat.name.toString()}}:</div>
+                    </div>
+                  </div>
+                  <div class="col-6 text-left">
+                    <q-rating
+                      size="20px"
+                      v-model="powerstat.value"
+                      readonly
+                      :max="6"
+                      color="primary"
+                      icon="star_border"
+                      icon-selected="star"
+                      icon-half="star_half"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- </div> -->
+      </q-card>
+    </div>
+
+    <div class="row">
+      <q-card
+        class="col q-pa-sm"
+        style=" margin-left: 6px; margin-right: 6px; margin-top: 2px; margin-bottom: 7px; "
+      >
+        <div v-for="(value, name, index) in hero" v-bind:key="index + name">
+          <div
+            v-if="
+            index !== 0 &&
+              name !== 'name' &&
+              name !== 'id' &&
+              name !== 'image' &&
+              name !== 'liked' &&
+              name !== 'powerstats' && 
+              name !== 'favorite'
+          "
+            class="row"
+          >
+            <div class="col-2" style="background-color: #E8E8E8; padding: 10px;  ">
+              <b>{{ name }}:</b>
+            </div>
+
+            <div class="col" style=" padding: 10px;  border-bottom: solid #E8E8E8 10px;">
+              <div class="row" v-for="(value, name, index) in value" v-bind:key="index">
+                <div class="col-3">
+                  <b>{{ name }}:</b>
+                </div>
+
+                <div class="col">
+                  <div
+                    v-if="typeof value === 'string' || typeof value === 'number'"
+                    class="col-4"
+                  >{{ value }}</div>
+                  <div
+                    v-else
+                    v-for="(value, name, index) in value"
+                    v-bind:key="index + value"
+                    class="col pl-3 mr-1"
+                  >
+                    <span v-if="typeof value === 'string'">{{ value }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </q-card>
     </div>
 
     <q-separator />
-
-    <!-- <q-card-actions> -->
-    <!-- <q-btn flat round icon="event" />
-      <q-btn flat>
-        5:30PM
-      </q-btn>
-      <q-btn flat>
-        7:00PM
-      </q-btn>
-      <q-btn flat color="primary">
-        Reserve
-      </q-btn> -->
-    <!-- </q-card-actions> -->
   </q-card>
 </template>
 
 <script>
-// import store from "@/store/index";
+// import HeroCard from "components/HeroCard";
+
+import store from "../store/old-module/index";
+
 import { dataService } from "../shared/data.service";
 export default {
   name: "HeroDetails",
+  components: {
+    // HeroCard
+  },
   props: {
     id: {
       type: Number,
@@ -96,6 +168,11 @@ export default {
   },
   data() {
     return {
+      stars: {
+        rounded: 0,
+        precise: 0
+      },
+      powerstats: [],
       clonedHero: {},
       tableData: [],
       expanded: false,
@@ -107,7 +184,6 @@ export default {
       details: false,
       message: "",
       picLoaded: undefined,
-      pic: undefined,
       mainProps: {
         center: true,
         width: 200
@@ -120,37 +196,28 @@ export default {
   methods: {
     cloneHero() {
       this.tableData = dataService.jsonToTable({ ...this.hero });
-      this.pic = this.hero.image.url;
-      this.favorite.status = this.hero.liked;
-      if (this.hero.liked) this.favorite.color = "success";
-      else this.favorite.color = "light";
+      this.clonedHero = { ...this.hero };
+
+      let total = 0;
+      for (let powerstat in this.clonedHero.powerstats) {
+        let value = this.clonedHero.powerstats[powerstat];
+        value = isNaN(value) ? 0 : value / (100 / 6);
+        total += Number(value);
+        this.powerstats.push({
+          name: [powerstat],
+          value: Number(value.toFixed(1))
+        });
+      }
+      this.stars.rounded = Number((total / 6).toFixed(1));
+      this.stars.precise = (total / 6).toFixed(2);
     },
-    onAddToFavorites() {
-      this.favorite.status = !this.favorite.status;
-      if (this.favorite.status) this.favorite.color = "success";
-      else this.favorite.color = "light";
-      store.dispatch("addRemoveFavHero", {
-        ...this.hero
-      });
-    },
-    onEdit() {
-      this.edit = !this.edit;
-    },
-    onDetails() {
-      this.details = !this.details;
-    },
-    cancelHero() {
-      this.$emit("cancel");
-    },
-    async saveHero() {
-      this.$emit("save", this.clonedHero);
+    onAddRemoveFavHero() {
+      this.hero.favorite = !this.hero.favorite;
+      store.dispatch("addRemoveFavHero", { ...this.hero });
     }
   }
 };
 </script>
 
 <style lang="sass" scoped>
-.my-card
-  width: 1000px;
-  max-width: 100vw;
 </style>

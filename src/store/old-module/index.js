@@ -4,10 +4,12 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import { API } from '../../shared/config'
 import { ADD_HERO, CLEAR_HERO, API_ERROR, ADD_REMOVE_FAV_HERO } from './mutation-types'
+import availableHeroes from "../../shared/db.json"
 
 Vue.use(Vuex)
 
 const state = () => ({
+  availableHeroes: availableHeroes,
   hero: [],
   heroes: [],
   api_error: undefined,
@@ -69,7 +71,6 @@ const actions = {
           context.commit(API_ERROR, heroByName.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
-          console.log("heroByName", heroByName)
           heroByName.data.results.forEach(h => {
             h.favorite = !!favoriteHero(h.id)
           })
@@ -98,6 +99,7 @@ const actions = {
 }
 
 const getters = {
+  getAvailableHeroesList: state => state.availableHeroes,
   getAvailableHero: state => state.hero,
   getApiErrorMsg: state => state.api_error,
   getFavoriteHeroes: state => state.favorite_heroes
