@@ -76,7 +76,7 @@
         <div class="row justify-center q-mt-lg">
           <div
             v-for="(hero, index) in this.pagination.chunkedHeroes[this.pagination.currentPage]"
-            v-bind:key="index + hero"
+            v-bind:key="index + hero + '-search'"
           >
             <HeroCard :hero="hero" />
           </div>
