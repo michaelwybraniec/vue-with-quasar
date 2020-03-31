@@ -22,9 +22,16 @@
             <div class="text-subtitle text-white">Loading...</div>
           </template>
           <template v-slot:error>
-            <div class="absolute-full flex flex-center bg-primary text-white">No image :-(</div>
+            <div class="absolute-full flex flex-center bg-primary text-white">
+              No image :-(
+              <q-btn
+                fab
+                icon="favorite"
+                :color="this.hero.favorite ? 'negative' : 'primary'"
+                @click="onAddRemoveFavHero()"
+              />
+            </div>
           </template>
-
           <q-page-sticky :offset="[230, 0]">
             <q-btn
               fab
@@ -62,7 +69,7 @@
               <div
                 class="col no-wrap items-center"
                 v-for="powerstat in this.powerstats"
-                v-bind:key="powerstat.toString()"
+                v-bind:key="powerstat.name + '-powerstat'"
                 style="padding-top: 3px"
               >
                 <div class="row" v-if="!powerstat.total">
@@ -97,7 +104,7 @@
         class="col q-pa-sm"
         style=" margin-left: 6px; margin-right: 6px; margin-top: 2px; margin-bottom: 7px; "
       >
-        <div v-for="(value, name, index) in hero" v-bind:key="index + name">
+        <div v-for="(value, name, index) in hero" v-bind:key="index +'-details'">
           <div
             v-if="
             index !== 0 &&
@@ -115,7 +122,11 @@
             </div>
 
             <div class="col" style=" padding: 10px;  border-bottom: solid #E8E8E8 10px;">
-              <div class="row" v-for="(value, name, index) in value" v-bind:key="index">
+              <div
+                class="row"
+                v-for="(value, name, index) in value"
+                v-bind:key="index + name + '-detailed-details'"
+              >
                 <div class="col-3">
                   <b>{{ name }}:</b>
                 </div>
