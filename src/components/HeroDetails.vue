@@ -10,12 +10,7 @@
       >
         <q-img
           :src="this.hero.image.url"
-          style="
-              height: 300px; 
-              max-width: 318px;
-              border-radius: 5px;
-              margin: 8px
-              "
+          style="max-width: 400px; height: 350px;"
           placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
         >
           <template v-slot:loading>
@@ -27,19 +22,22 @@
               <q-btn
                 fab
                 icon="favorite"
+                glossy
                 :color="this.hero.favorite ? 'negative' : 'primary'"
                 @click="onAddRemoveFavHero()"
               />
             </div>
           </template>
-          <q-page-sticky :offset="[230, 0]">
-            <q-btn
-              fab
-              icon="favorite"
-              :color="this.hero.favorite ? 'negative' : 'primary'"
-              @click="onAddRemoveFavHero()"
-            />
-          </q-page-sticky>
+          <template>
+            <q-page-sticky position="top-left" :offset="[-230, 120]">
+              <q-btn
+                fab
+                icon="favorite"
+                :color="this.hero.favorite ? 'negative' : 'primary'"
+                @click="onAddRemoveFavHero()"
+              />
+            </q-page-sticky>
+          </template>
         </q-img>
       </q-card>
 
@@ -54,7 +52,7 @@
               <q-rating
                 class="items-center"
                 size="25px"
-                v-model="this.stars.rounded"
+                v-model="this.hero.powerstars[this.hero.powerstars.length -1].value.rounded"
                 readonly
                 :max="6"
                 color="primary"
@@ -62,27 +60,29 @@
                 icon-selected="star"
                 icon-half="star_half"
               />
-              <span class="text-grey q-ml-sm q-mt-sm">{{ this.stars.precise }}</span>
+              <span
+                class="text-grey q-ml-sm q-mt-sm"
+              >{{ this.hero.powerstars[this.hero.powerstars.length -1].value.precise }}</span>
             </div>
 
             <div style="padding-top: 22px">
               <div
                 class="col no-wrap items-center"
-                v-for="powerstat in this.powerstats"
-                v-bind:key="powerstat.name + '-powerstat'"
+                v-for="powerstar in this.hero.powerstars"
+                v-bind:key="powerstar.name + '-powerstat'"
                 style="padding-top: 3px"
               >
-                <div class="row" v-if="!powerstat.total">
+                <div class="row" v-if="powerstar.name !== 'total'">
                   <div class="col-6">
                     <div class="row">
                       <div class="col-4"></div>
-                      <div class="col">{{powerstat.name.toString()}}:</div>
+                      <div class="col">{{powerstar.name.toString()}}:</div>
                     </div>
                   </div>
                   <div class="col-6 text-left">
                     <q-rating
                       size="20px"
-                      v-model="powerstat.value"
+                      v-model="powerstar.value"
                       readonly
                       :max="6"
                       color="primary"
@@ -113,7 +113,8 @@
               name !== 'image' &&
               name !== 'liked' &&
               name !== 'powerstats' && 
-              name !== 'favorite'
+              name !== 'favorite' &&
+              name !== 'powerstars'
           "
             class="row"
           >
@@ -179,13 +180,7 @@ export default {
   },
   data() {
     return {
-      stars: {
-        rounded: 0,
-        precise: 0
-      },
-      powerstats: [],
       clonedHero: {},
-      tableData: [],
       expanded: false,
       favorite: {
         status: false,
@@ -206,21 +201,8 @@ export default {
   },
   methods: {
     cloneHero() {
-      this.tableData = dataService.jsonToTable({ ...this.hero });
+      this.tableData = dataService.jsonToTable({ ...this.hero }); //example of using data.service
       this.clonedHero = { ...this.hero };
-
-      let total = 0;
-      for (let powerstat in this.clonedHero.powerstats) {
-        let value = this.clonedHero.powerstats[powerstat];
-        value = isNaN(value) ? 0 : value / (100 / 6);
-        total += Number(value);
-        this.powerstats.push({
-          name: [powerstat],
-          value: Number(value.toFixed(1))
-        });
-      }
-      this.stars.rounded = Number((total / 6).toFixed(1));
-      this.stars.precise = (total / 6).toFixed(2);
     },
     onAddRemoveFavHero() {
       this.hero.favorite = !this.hero.favorite;

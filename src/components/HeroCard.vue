@@ -12,7 +12,7 @@
         <div class="row no-wrap items-center">
           <q-rating
             size="25px"
-            v-model="stars.rounded"
+            v-model="this.hero.powerstars[this.hero.powerstars.length - 1].value.rounded"
             readonly
             :max="6"
             color="primary"
@@ -20,7 +20,9 @@
             icon-selected="star"
             icon-half="star_half"
           />
-          <span class="text-grey q-ml-sm q-mt-sm">{{ stars.precise }}</span>
+          <span
+            class="text-grey q-ml-sm q-mt-sm"
+          >{{ this.hero.powerstars[this.hero.powerstars.length - 1].value.precise }}</span>
         </div>
       </q-card-section>
       <q-img
@@ -44,10 +46,11 @@
       <q-card-actions>
         <q-btn
           icon="favorite"
+          unelevated
           :color="this.hero.favorite ? 'negative' : 'primary'"
           @click="onAddRemoveFavHero()"
         />
-        <q-btn icon="visibility" color="primary" @click="heroDetails = true" />
+        <q-btn icon="visibility" unelevated color="primary" @click="heroDetails = true" />
       </q-card-actions>
     </q-card>
     <q-dialog v-model="heroDetails">
@@ -107,28 +110,7 @@ export default {
       }
     };
   },
-  watch: {
-    loadStars(newStars) {
-      this.stars = newStars;
-    }
-  },
-  computed: {
-    loadStars() {
-      return this.getStars();
-    }
-  },
   methods: {
-    getStars() {
-      let starValue = 100 / 6;
-      let total = 0;
-      for (let power in this.hero.powerstats) {
-        let value = this.hero.powerstats[power];
-        let average = isNaN(value) ? 0 : value / starValue;
-        total += average;
-      }
-      this.stars.rounded = Number((total / 6).toFixed(1));
-      this.stars.precise = (total / 6).toFixed(2);
-    },
     onAddRemoveFavHero() {
       this.hero.favorite = !this.hero.favorite;
       store.dispatch("addRemoveFavHero", { ...this.hero });
