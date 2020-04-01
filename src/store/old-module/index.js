@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { API } from '../../shared/config'
-import { ADD_HERO, CLEAR_HERO, API_ERROR, ADD_REMOVE_FAV_HERO } from './mutation-types'
 import availableHeroes from "../../shared/db.json"
+import { dataService } from "../../shared/data.service";
+import { ADD_HERO, CLEAR_HERO, API_ERROR, ADD_REMOVE_FAV_HERO } from './mutation-types'
 
 Vue.use(Vuex)
 
@@ -47,12 +48,7 @@ const actions = {
     const reqByIdUrl = `${herokuCors}/${url}/${key}/${input}`
     // reqByNameUrl = `${url}/${key}/search/${input}`
     // reqByIdUrl = `${url}/${key}/${input}`
-    const favoriteHero = (heroId) => {
-      return this.state.favorite_heroes.find(h => {
-        if (h.id === heroId) return true
-        else false
-      })
-    }
+  
     try {
       const heroById = await axios.get(reqByIdUrl)
       if (!heroById.data.error) {
@@ -60,7 +56,8 @@ const actions = {
           context.commit(API_ERROR, heroById.data.error)
           context.commit(CLEAR_HERO, undefined)
         } else {
-          heroById.data.favorite = !!favoriteHero(heroById.data.id)
+          heroById.data.favorite = !!dataService.favoriteHero(heroById.data.id, this.state)
+          heroById.data.powerstars = dataService.statsToStars(heroById.data.powerstats)
           context.commit(API_ERROR, undefined)
           context.commit(ADD_HERO, heroById.data)
         }
@@ -71,7 +68,8 @@ const actions = {
           context.commit(CLEAR_HERO, undefined)
         } else {
           heroByName.data.results.forEach(h => {
-            h.favorite = !!favoriteHero(h.id)
+            h.favorite = !!dataService.favoriteHero(h.id, this.state);
+            h.powerstars = dataService.statsToStars(h.powerstats)
           })
           context.commit(API_ERROR, undefined)
           context.commit(ADD_HERO, heroByName.data.results)

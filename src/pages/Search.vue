@@ -1,7 +1,10 @@
 <template>
   <q-page class="q-pa-lg bg-grey-2">
-    <div class="row">
-      <div class="col-12 q-pa-xs">
+    <div class="row flex-center">
+      <div
+        class="col-10 q-pl-xl q-pr-xl q-pt-md"
+        style="background-color: #E8E8E8; border-radius: 5px;"
+      >
         <form @submit.prevent.stop="onSubmit">
           <q-select
             :disable="buttons.search.loading"
@@ -51,15 +54,15 @@
       <div v-if="hero.response !== 'success' && hero.length !== 1">
         <div v-if="hero.length" class="row flex flex-center">
           <div
-            class="col-4 q-pa-sm flex flex-center"
+            class="col-10 q-pa-sm flex flex-center"
             style="background-color: #E8E8E8; border-radius: 5px;"
           >
             <div class="row">
               <div class="col-12 text-center q-pb-sm">
                 Last searched phrase:
-                <b>'{{this.input.previousSearch}}'</b>,
+                <b style="font-size: 18px">'{{this.input.previousSearch}}'</b>,
                 heroes found:
-                <b>{{this.hero.length}}</b>
+                <b style="font-size: 18px">{{this.hero.length}}</b>
               </div>
 
               <div class="col-12 text-center flex flex-center">
@@ -73,7 +76,7 @@
           </div>
         </div>
 
-        <div class="row justify-center q-mt-lg">
+        <div class="row justify-center q-mt-md">
           <div
             v-for="(hero, index) in this.pagination.chunkedHeroes[this.pagination.currentPage]"
             v-bind:key="index + hero + '-search'"
@@ -83,9 +86,15 @@
         </div>
       </div>
       <div v-else>
-        <div class="row justify-center q-mt-lg">
-          <div style="width: 700px; max-width: 80vw;">
+        <div class="row justify-center q-pa-xl">
+          <div class="col-4">
             <HeroDetails :hero="hero[0]" />
+          </div>
+          <div
+            v-if="this.favoriteHeroes.length && this.favoriteHeroes.length === 'hiddenAsBuggs'"
+            class="col-8"
+          >
+            <Favorites />
           </div>
         </div>
       </div>
@@ -122,12 +131,13 @@
 import store from "../store/old-module/index";
 import HeroCard from "components/HeroCard";
 import HeroDetails from "components/HeroDetails";
+import Favorites from "./Favorites";
 
 import data from "../shared/db.json";
 
 export default {
   name: "Search",
-  components: { HeroCard, HeroDetails },
+  components: { HeroCard, HeroDetails, Favorites },
   data() {
     return {
       search: null,
@@ -186,6 +196,9 @@ export default {
   computed: {
     hero() {
       return store.getters.getAvailableHero;
+    },
+    favoriteHeroes() {
+      return store.getters.getFavoriteHeroes;
     },
     apiError() {
       return store.getters.getApiErrorMsg;

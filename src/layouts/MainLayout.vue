@@ -11,39 +11,24 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
       </q-toolbar>
-      <div class="q-px-lg q-pt-xl q-mb-md">
+      <div class="q-px-lg q-pt-sm q-mb-md">
         <div class="text-h3">Heroes</div>
-        <div class="text-subtitle2">
-          A Quassar-Vue Framework App.
-        </div>
+        <div class="text-subtitle2">A Quassar-Vue Framework App.</div>
       </div>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      :width="250"
-      :breakpoint="400"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above :width="250" :breakpoint="400">
       <q-scroll-area
-        style="height: calc(100% - 185px); margin-top: 185px; border-right: 1px solid #ddd"
+        style="height: calc(100% - 146px); margin-top: 146px; border-right: 1px solid #ddd"
       >
         <q-list padding>
-          <q-item-label header>
-            Essential Links
-          </q-item-label>
+          <q-item-label header>Essential Links</q-item-label>
 
-          <EssentialLink
-            v-for="linkObj in essentialLinks"
-            :key="linkObj.title"
-            v-bind="linkObj"
-          />
+          <EssentialLink v-for="linkObj in essentialLinks" :key="linkObj.title" v-bind="linkObj" />
 
           <q-separator />
 
-          <q-item-label header>
-            Menu
-          </q-item-label>
+          <q-item-label header>Menu</q-item-label>
 
           <div v-for="linkObj in standardLinks" :key="linkObj.title">
             <q-separator v-if="linkObj.separator" />
@@ -52,11 +37,7 @@
         </q-list>
       </q-scroll-area>
 
-      <q-img
-        class="absolute-top avatar-image"
-        src="statics/black-square.jpg"
-        style="height: 185px"
-      >
+      <q-img class="absolute-top avatar-image" src="statics/black-square.jpg" style="height: 146px">
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
             <img src="statics/avatar.jpeg" />
@@ -67,8 +48,6 @@
       </q-img>
     </q-drawer>
 
-    <!-- <div class="text-subtitle2">{{ todaysDate }}</div> -->
-
     <q-page-container>
       <keep-alive>
         <router-view />
@@ -78,6 +57,8 @@
 </template>
 
 <script>
+import store from "../store/old-module/index";
+
 import { date } from "quasar";
 import EssentialLink from "components/EssentialLink";
 import StandardLink from "components/StandardLink";
