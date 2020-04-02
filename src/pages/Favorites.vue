@@ -2,12 +2,14 @@
   <q-page class="q-pa-lg bg-grey-2">
     <div v-if="this.heroes.data.length">
       <div class="text-center q-pb-sm">Favorites:</div>
+
       <div class="row flex flex-center">
         <div
           class="col-10 q-pa-md flex flex-center"
           style="background-color: #E8E8E8; border-radius: 5px;"
         >
           <q-btn-group unelevated>
+
             <q-btn
               unelevated
               label="Name"
@@ -19,6 +21,7 @@
                 <q-icon v-if="!this.sort.inverse" name="keyboard_arrow_down" />
               </div>
             </q-btn>
+
             <q-btn
               unelevated
               label="Stars"
@@ -30,8 +33,11 @@
                 <q-icon v-if="!this.sort.inverse" name="keyboard_arrow_down" />
               </div>
             </q-btn>
+
           </q-btn-group>
+
           <!-- {{this.sort}} -->
+          
         </div>
       </div>
 
@@ -40,6 +46,7 @@
           <HeroCard :hero="hero" />
         </div>
       </div>
+
     </div>
 
     <div v-if="!this.heroes.data.length" class="no-favorite-heroes absolute-center">
@@ -48,6 +55,7 @@
         <q-btn class="q-ml-sm q-mr-sm" color="primary" unelevated icon="search" to="/">Search</q-btn>to keep your first hero!
       </div>
     </div>
+
   </q-page>
 </template>
 
@@ -103,7 +111,6 @@ export default {
       );
     },
     sortByAttribute(array, attribute, inverse) {
-      console.log("sortByAttribute", array, attribute, inverse);
       if (attribute === "name") {
         return array.sort(function(a, b) {
           return a.name == b.name
@@ -112,9 +119,8 @@ export default {
             ? +(a.name > b.name) || -1
             : +(a.name < b.name) || -1;
         });
-      } else {
+      } else if(attribute === "stars"){
         return array.sort(function(a, b) {
-          // console.log(a, b);
           return a.powerstars[6].value.rounded === b.powerstars[6].value.rounded
             ? 0
             : inverse
@@ -132,10 +138,10 @@ export default {
 </script>
 
 <style lang="scss">
-.my-card {
-  height: 10px;
-  max-width: 350px;
-}
+// .my-card {
+//   height: 10px;
+//   max-width: 350px;
+// }
 .no-favorite-heroes {
   opacity: 0.6;
 }

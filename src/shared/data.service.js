@@ -1,6 +1,6 @@
 
-import axios from "axios";
-import { API } from "./config";
+// import axios from "axios";
+// import { API } from "./config";
 
 //! This data service did not return the obj re.data to the vuex actions.
 //! Therefore store:actions:getHeroAction: calls api itself currently.

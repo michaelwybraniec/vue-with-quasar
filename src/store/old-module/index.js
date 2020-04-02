@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import { API } from '../../shared/config'
 import availableHeroes from "../../shared/db.json"
+import { API } from '../../shared/config'
 import { dataService } from "../../shared/data.service";
 import { ADD_HERO, CLEAR_HERO, API_ERROR, ADD_REMOVE_FAV_HERO } from './mutation-types'
 
@@ -20,8 +20,8 @@ const mutations = {
   [ADD_HERO] (state, hero) {
     this.state.hero = hero
     const matchingHero = state.heroes.find(h => h.id === hero.id)
-    if (!matchingHero) state.heroes.push(hero) //! pushing new hero
-    else state.heroes[matchingHero] = hero //! updating existing hero
+    if (!matchingHero) state.heroes.push(hero) //? pushing new hero
+    else state.heroes[matchingHero] = hero //? updating existing hero
   },
   [CLEAR_HERO] (state, hero) {
     state.hero = hero

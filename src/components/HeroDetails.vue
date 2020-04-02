@@ -2,7 +2,7 @@
   <q-card style=" background-color: #E8E8E8; border-radius: 5px;">
     <div class="row" style="margin: 6px; margin-top: 10px ">
       <q-card
-        class="justify-center col q-mt-sm"
+        class="justify-center col-12 col-lg-5 q-mt-sm"
         :style="this.hero.favorite
           ? 'border: solid 0.12rem #1f4d7a; border-radius: 5px;'
           : 'border: solid 0.12rem white; border-radius: 5px;'
@@ -10,7 +10,8 @@
       >
         <q-img
           :src="this.hero.image.url"
-          style="max-width: 400px; height: 350px;"
+          class="flex flex-center"
+          style=" max-width: 400px; height: 350px;"
           placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
         >
           <template v-slot:loading>
@@ -41,7 +42,7 @@
         </q-img>
       </q-card>
 
-      <q-card class="col-6 q-mt-sm" style=" margin-left: 8px">
+      <q-card class="col q-mt-sm q-pb-lg" style=" margin-left: 8px">
         <div class="row">
           <div class="col">
             <h4

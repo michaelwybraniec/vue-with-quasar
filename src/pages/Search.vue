@@ -1,10 +1,12 @@
 <template>
   <q-page class="q-pa-lg bg-grey-2">
+
     <div class="row flex-center">
       <div
         class="col-10 q-pl-xl q-pr-xl q-pt-md"
         style="background-color: #E8E8E8; border-radius: 5px;"
       >
+
         <form @submit.prevent.stop="onSubmit">
           <q-select
             :disable="buttons.search.loading"
@@ -35,6 +37,7 @@
                 <q-item-section class="text-grey">No results</q-item-section>
               </q-item>
             </template>
+
             <template v-slot:after>
               <q-btn
                 v-if="!buttons.search.loading"
@@ -46,18 +49,24 @@
                 @click="onSubmit()"
               />
             </template>
+
           </q-select>
         </form>
+
       </div>
     </div>
+
     <div v-if="hero && !loading">
+
       <div v-if="hero.response !== 'success' && hero.length !== 1">
+
         <div v-if="hero.length" class="row flex flex-center">
           <div
             class="col-10 q-pa-sm flex flex-center"
             style="background-color: #E8E8E8; border-radius: 5px;"
           >
             <div class="row">
+
               <div class="col-12 text-center q-pb-sm">
                 Last searched phrase:
                 <b style="font-size: 18px">'{{this.input.previousSearch}}'</b>,
@@ -72,11 +81,12 @@
                   :input="true"
                 ></q-pagination>
               </div>
+
             </div>
           </div>
         </div>
 
-        <div class="row justify-center q-mt-md">
+        <div class="row justify-center q-mt-lg">
           <div
             v-for="(hero, index) in this.pagination.chunkedHeroes[this.pagination.currentPage]"
             v-bind:key="index + hero + '-search'"
@@ -84,20 +94,17 @@
             <HeroCard :hero="hero" />
           </div>
         </div>
+
       </div>
+
       <div v-else>
-        <div class="row justify-center q-pa-xl">
-          <div class="col-4">
+        <div class="row justify-center q-mt-lg">
+          <div style="width: 700px; max-width: 80vw;">
             <HeroDetails :hero="hero[0]" />
-          </div>
-          <div
-            v-if="this.favoriteHeroes.length && this.favoriteHeroes.length === 'hiddenAsBuggs'"
-            class="col-8"
-          >
-            <Favorites />
           </div>
         </div>
       </div>
+
     </div>
 
     <div v-if="loading" class="no-hero absolute-center">
@@ -124,20 +131,20 @@
         </div>
       </div>
     </div>
+    
   </q-page>
+
 </template>
 
 <script>
 import store from "../store/old-module/index";
 import HeroCard from "components/HeroCard";
 import HeroDetails from "components/HeroDetails";
-import Favorites from "./Favorites";
-
 import data from "../shared/db.json";
 
 export default {
   name: "Search",
-  components: { HeroCard, HeroDetails, Favorites },
+  components: { HeroCard, HeroDetails },
   data() {
     return {
       search: null,
@@ -196,9 +203,6 @@ export default {
   computed: {
     hero() {
       return store.getters.getAvailableHero;
-    },
-    favoriteHeroes() {
-      return store.getters.getFavoriteHeroes;
     },
     apiError() {
       return store.getters.getApiErrorMsg;

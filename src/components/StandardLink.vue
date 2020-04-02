@@ -6,18 +6,29 @@
 
     <q-item-section>
       <q-item-label>
+
         {{ title }}
-        <q-badge v-if="title === 'Search' && hero.length" align="middle" color="primary">
-          <b>{{hero.length}}</b>
+       
+        <q-badge 
+          v-if="title === 'Search' && hero.length" 
+          align="middle" 
+          color="primary"
+          >
+            <b>
+              {{hero.length}}
+            </b>
         </q-badge>
 
         <q-badge
           v-if="title === 'Favorites' && favoriteHeroes.length"
           align="middle"
           color="primary"
-        >
-          <b>{{favoriteHeroes.length}}</b>
+          >
+            <b>
+              {{favoriteHeroes.length}}
+            </b>
         </q-badge>
+
       </q-item-label>
       <!-- <q-item-label caption>
         {{ caption }}
