@@ -1,5 +1,8 @@
+
 <template>
+
   <div class="justify-center q-pl-xs q-pb-xs q-pt-xs q-pr-xs">
+
     <q-card
       :style="
         this.hero.favorite
@@ -8,8 +11,10 @@
       "
     >
       <q-card-section>
+
         <div class="text-bold text-center q-mb-xs">{{ this.hero.name }}</div>
         <div class="row no-wrap items-center">
+
           <q-rating
             size="25px"
             v-model="this.hero.powerstars[this.hero.powerstars.length - 1].value.rounded"
@@ -20,15 +25,23 @@
             icon-selected="star"
             icon-half="star_half"
           />
+
           <span
             class="text-grey q-ml-sm q-mt-sm"
-          >{{ this.hero.powerstars[this.hero.powerstars.length - 1].value.precise }}</span>
+          >
+              {{ this.hero.powerstars[this.hero.powerstars.length - 1].value.precise }}
+
+          </span>
+
         </div>
+
       </q-card-section>
-      <q-img
+
+        <q-img
         :src="this.hero.image.url"
+
         style="
-        height: 200px; 
+        height: 200px;
         max-width: 210px;
         border-radius: 5px;
         margin: 8px
@@ -52,9 +65,12 @@
         />
         <q-btn icon="visibility" unelevated color="primary" @click="heroDetails = true" />
       </q-card-actions>
+
     </q-card>
+
     <q-dialog v-model="heroDetails">
-      <q-card style="width: 750px; max-width: 100vw;">
+
+      <q-card style="width: 700px; max-width: 80vw;">
         <q-card-section>
           <div class="text-h6">Details for: {{ this.hero.name }}</div>
         </q-card-section>
@@ -65,8 +81,11 @@
           <q-btn class="q-pa-ms" label="OK" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
+
     </q-dialog>
+
   </div>
+
 </template>
 
 <script>
