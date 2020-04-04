@@ -54,23 +54,19 @@
                 </q-list>
             </q-scroll-area>
 
-
-                <q-img
-                    class="absolute-top avatar-image"
-                    src="statics/black-square.jpg"
-                    style="height: 95px;"
-                >
-                    <div class="absolute-bottom bg-transparent">
-                        <q-avatar size="22px" class="q-mb-sm">
-                            <img src="statics/avatar.jpeg" />
-                        </q-avatar>
-                        <div class="text-weight-bold">Michael Wybraniec</div>
-                        <div style="font-size: 10px">@michaelwybraniec</div>
-                    </div>
-                </q-img>
-
-
-
+            <q-img
+                class="absolute-top avatar-image"
+                src="statics/black-square.jpg"
+                style="height: 95px;"
+            >
+                <div class="absolute-bottom bg-transparent">
+                    <q-avatar size="22px" class="q-mb-sm">
+                        <img src="statics/avatar.jpeg" />
+                    </q-avatar>
+                    <div class="text-weight-bold">Michael Wybraniec</div>
+                    <div style="font-size: 10px;">@michaelwybraniec</div>
+                </div>
+            </q-img>
         </q-drawer>
 
         <q-page-container>
@@ -82,7 +78,6 @@
 </template>
 
 <script>
-
 import { date } from 'quasar';
 import EssentialLink from '../components/EssentialLink';
 import StandardLink from '../components/StandardLink';
@@ -126,8 +121,7 @@ export default {
                     icon: 'favorite',
                     link: '/favorites',
                     separator: false
-                },
-
+                }
             ]
         };
     },

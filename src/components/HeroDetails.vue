@@ -8,7 +8,7 @@
         "
     >
         <q-img
-            class="col-12 col-md-5 flex flex-center "
+            class="col-12 col-md-5 flex flex-center"
             :src="this.hero.image.url"
             placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
             style="max-width: 720px; height: 368px; border-radius: 6px;"

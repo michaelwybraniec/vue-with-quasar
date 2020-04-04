@@ -1,4 +1,3 @@
-
 // import axios from "axios";
 // import { API } from "./config";
 
@@ -18,46 +17,46 @@
 // };
 
 const jsonToTable = (data) => {
-  //! solution to use shared utils to convert JSON to Quasar table
-  console.log("shared => data.service.js => jsonToTable()", data)
-}
+    //! solution to use shared utils to convert JSON to Quasar table
+    console.log('shared => data.service.js => jsonToTable()', data);
+};
 
 const favoriteHero = (heroId, state) => {
-  return state.favorite_heroes.find(h => {
-    if (h.id === heroId) return true
-    else false
-  })
-}
+    return state.favorite_heroes.find((h) => {
+        if (h.id === heroId) return true;
+        else false;
+    });
+};
 
 const statsToStars = (powerstats) => {
     let powerstars = [];
     let starValue = 100 / 6;
     let total = 0;
     for (let powerstat in powerstats) {
-      let value = powerstats[powerstat];
-      value = isNaN(value) ? 0 : value / starValue;
-      total += Number(value);
-      powerstars.push({
-        name: powerstat,
-        value: Number(value.toFixed(1))
-      });
+        let value = powerstats[powerstat];
+        value = isNaN(value) ? 0 : value / starValue;
+        total += Number(value);
+        powerstars.push({
+            name: powerstat,
+            value: Number(value.toFixed(1))
+        });
     }
     powerstars.push({
-      name: "total",
-      value: {
-        rounded: Number((total / 6).toFixed(1)),
-        precise: (total / 6).toFixed(2)
-      }
+        name: 'total',
+        value: {
+            rounded: Number((total / 6).toFixed(1)),
+            precise: (total / 6).toFixed(2)
+        }
     });
 
-  // console.log("statsToStars", " \n powerstats", powerstats, "\n powerstars", powerstars)
+    // console.log("statsToStars", " \n powerstats", powerstats, "\n powerstars", powerstars)
 
-    return powerstars
-}
+    return powerstars;
+};
 
 export const dataService = {
-  // get,
-  jsonToTable,
-  statsToStars,
-  favoriteHero
+    // get,
+    jsonToTable,
+    statsToStars,
+    favoriteHero
 };
