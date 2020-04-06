@@ -8,7 +8,7 @@
   "author": "michaelwybraniec@me.com",
   "private": true,
   "scripts": {
-    "build": "quasar build",
+    "build": "./node_modules/.bin/quasar build",
     "start": "node server.js",
     "heroku-postbuild": "yarn && yarn build",
     "lint": "eslint --ext .js,.vue src",
@@ -35,7 +35,14 @@
     "eslint-config-prettier": "^4.0.0",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-vue": "^6.1.2",
-    "push-dir": "^0.4.1"
+    "push-dir": "^0.4.1",
+    "@types/jest": "25.1.2",
+    "@types/lodash": "4.14.149",
+    "@types/moment-timezone": "0.5.12",
+    "@typescript-eslint/eslint-plugin": "2.19.2",
+    "@typescript-eslint/eslint-plugin-tslint": "2.19.2",
+    "@typescript-eslint/parser": "2.19.2",
+    "typescript": "3.6.4"
   },
   "engines": {
     "node": ">= 10.18.1",

@@ -1,30 +1,30 @@
-// {
-//   "compilerOptions": {
-//       "allowSyntheticDefaultImports": true,
-//       "baseUrl": "src",
-//       "esModuleInterop": true,
-//       "experimentalDecorators": true,
-//       "lib": ["es2018", "dom"],
-//       "module": "esnext",
-//       "moduleResolution": "node",
-//       "noImplicitAny": true,
-//       "noImplicitThis": true,
-//       "noUnusedLocals": true,
-//       "paths": {
-//           "@api/*": ["api/*"],
-//           "@components/*": ["components/*"],
-//           "@constants/*": ["constants/*"],
-//           "@directives/*": ["directives/*"],
-//           "@i18n/*": ["i18n/*"],
-//           "@layouts/*": ["layouts/*"],
-//           "@mixins/*": ["mixins/*"],
-//           "@pages/*": ["pages/*"],
-//           "@services/*": ["services/*"],
-//           "@static/*": ["static/*"],
-//           "@store/*": ["store/*"]
-//       },
-//       "sourceMap": true,
-//       "target": "es5"
-//   },
-//   "include": ["src/**/*"]
-// }
+{
+  "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": "src",
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "lib": ["es2018", "dom"],
+      "module": "esnext",
+      "moduleResolution": "node",
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "paths": {
+          "@api/*": ["api/*"],
+          "@components/*": ["components/*"],
+          "@constants/*": ["constants/*"],
+          "@directives/*": ["directives/*"],
+          "@i18n/*": ["i18n/*"],
+          "@layouts/*": ["layouts/*"],
+          "@mixins/*": ["mixins/*"],
+          "@pages/*": ["pages/*"],
+          "@services/*": ["services/*"],
+          "@static/*": ["static/*"],
+          "@store/*": ["store/*"]
+      },
+      "sourceMap": true,
+      "target": "es5"
+  },
+  "include": ["src/**/*"]
+}
