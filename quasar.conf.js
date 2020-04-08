@@ -59,9 +59,9 @@ module.exports = function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       // rtl: false, // https://quasar.dev/options/rtl-support
-      // showProgress: false,
+       showProgress: false,
       // gzip: true,
-      // analyze: true,
+       analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
@@ -155,6 +155,7 @@ module.exports = function (ctx) {
       bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
+          platform: 'win32'
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
