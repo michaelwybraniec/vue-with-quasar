@@ -1,162 +1,72 @@
 <template>
-    <q-page class="q-pa-lg bg-grey-2">
-        <div
-            v-if="this.heroes.length > 1 && !loading"
-            class="col-10 q-pl-xl q-pr-xl q-pt-md"
-            style="background-color: #e8e8e8; border-radius: 1px;"
-        >
-            <div
-                v-if="this.heroes.length > 1 && !loading"
-                class="row q-pb-md flex flex-center"
-            >
-                <div class="col-12 col-sm-4 text-center flex flex-center">
-                    &nbsp;Heroes found: &nbsp;
-                    <q-badge align="middle" color="primary">
-                        <b>
-                            {{ this.heroes.length }}
-                        </b>
-                    </q-badge>
-
-                    &nbsp; Favorites: &nbsp;
-                    <q-badge align="middle" color="primary">
-                        <b>
-                            {{ this.favoriteHeroes.length }}
-                        </b>
-                    </q-badge>
-                </div>
-
-                <div class="col-12 col-sm-4 text-center flex flex-center">
-                    <q-pagination
-                        color="grey-9"
-                        v-model="pagination.currentPage"
-                        :max="this.pagination.chunkedHeroes.length - 1"
-                        :input="true"
-                    ></q-pagination>
-                </div>
-
-                <div class="col-12 col-sm-4 text-center flex flex-center">
-                    <div class="" style="width: 100px;">
-                        <q-select
-                            dense
-                            square
-                            borderless
-                            v-model="itemsPerPage"
-                            :options="this.pagination.itemsPerPageOptions"
-                            label="Show items:"
-                        />
-                    </div>
-
-                    <q-btn-group unelevated>
-                        <q-btn
-                            label="Name"
-                            @click="onSort('name')"
-                            :text-color="
-                                this.sort.attribute === 'name'
-                                    ? 'black'
-                                    : 'grey-6'
-                            "
-                        >
-                            <div v-if="this.sort.attribute === 'name'">
-                                <q-icon
-                                    v-if="this.sort.inverse"
-                                    name="keyboard_arrow_up"
-                                />
-                                <q-icon
-                                    v-if="!this.sort.inverse"
-                                    name="keyboard_arrow_down"
-                                />
-                            </div>
-                        </q-btn>
-
-                        <q-btn
-                            label="Stars"
-                            @click="onSort('stars')"
-                            :text-color="
-                                this.sort.attribute === 'stars'
-                                    ? 'black'
-                                    : 'grey-6'
-                            "
-                        >
-                            <div v-if="this.sort.attribute === 'stars'">
-                                <q-icon
-                                    v-if="this.sort.inverse"
-                                    name="keyboard_arrow_up"
-                                />
-                                <q-icon
-                                    v-if="!this.sort.inverse"
-                                    name="keyboard_arrow_down"
-                                />
-                            </div>
-                        </q-btn>
-                    </q-btn-group>
-                </div>
+    <form @submit.prevent.stop="onSubmit">
+        <div class="row q-pt-sm">
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10 q-pa-sm">
+                <q-linear-progress
+                    v-if="buttons.search.loading"
+                    indeterminate
+                />
+                <q-linear-progress v-if="!buttons.search.loading" value="102" />
+                <q-select
+                    dark
+                    dense
+                    borderless
+                    text-color="white"
+                    :disable="buttons.search.loading"
+                    ref="search"
+                    use-input
+                    hide-selected
+                    fill-input
+                    clearable
+                    no-error-icon
+                    clear-icon="close"
+                    input-debounce="0"
+                    name="List"
+                    :rules="[
+                        val => !!val || 'Required *',
+                        val => val.length <= 15 || 'Max 15 character allowed.'
+                    ]"
+                    lazy-rules
+                    v-model="input.search"
+                    :options="this.filter.options"
+                    label="Search"
+                    label-color="primary"
+                    options-selected-class="text-deep-primary bg-info"
+                    @filter="filterFn"
+                    @new-value="newValue"
+                    class="col"
+                >
+                    <template v-slot:no-option>
+                        <q-item>
+                            <q-item-section class="text-grey">
+                                No results
+                            </q-item-section>
+                        </q-item>
+                    </template>
+                </q-select>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 q-pa-sm q-pb-lg">
+                <q-btn
+                    style="padding: 5px; background-color: #e8e8e8; border-radius: 1px;"
+                    class="full-width"
+                    :loading="loading"
+                    :disable="buttons.search.loading"
+                    :color="buttons.search.color"
+                    icon="search"
+                    unelevated
+                    @click="onSubmit()"
+                />
             </div>
         </div>
-
-        <div v-if="this.heroes && !loading">
-            <div
-                v-if="
-                    this.heroes.response !== 'success' &&
-                        this.heroes.length !== 1
-                "
-            >
-                <div class="row justify-center q-mt-lg">
-                    <div
-                        v-for="(hero, index) in this.pagination.chunkedHeroes[
-                            this.pagination.currentPage
-                        ]"
-                        v-bind:key="index + hero + '-search'"
-                    >
-                        <HeroCard :hero="hero" />
-                    </div>
-                </div>
-            </div>
-
-            <div v-else>
-                <div class="row justify-center q-mt-lg">
-                    <div style="width: 700px; max-width: 80vw;">
-                        <HeroDetails :hero="heroes[0]" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="loading" class="no-hero absolute-center">
-            <div class="text-h2 text-center">
-                <q-spinner color="primary" size="3em" :thickness="2" />
-            </div>
-        </div>
-
-        <div v-if="apiError && !loading" class="no-hero absolute-center">
-            <div class="bg-negative text text-center text-white">
-                <div>
-                    <p v-if="apiError">
-                        API err:
-                        <span class="bg-dark q-pa-sm q-ml-sm">{{
-                            apiError
-                        }}</span>
-                    </p>
-                    <p v-if="this.message.error" class="g-ml-sm">
-                        &nbsp;&nbsp;Customized err:
-                        <span class="bg-dark q-pa-sm q-ml-sm">
-                            {{ this.message.error }}
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </q-page>
+    </form>
 </template>
 
 <script>
 import store from '../store/old-module/index';
-import HeroCard from '../components/HeroCard';
-import HeroDetails from '../components/HeroDetails';
 import data from '../shared/db.json';
 
 export default {
     name: 'Search',
-    components: { HeroCard, HeroDetails },
     data() {
         return {
             search: null,
@@ -240,9 +150,6 @@ export default {
         heroes() {
             return store.getters.getAvailableHero;
         },
-        favoriteHeroes() {
-            return store.getters.getFavoriteHeroes;
-        },
         apiError() {
             return store.getters.getApiErrorMsg;
         }
@@ -259,7 +166,7 @@ export default {
                     this.loading = true;
                     this.buttons.search.loading = true;
                     this.buttons.search.disabled = true;
-                    this.buttons.search.color = 'negative';
+                    this.buttons.search.color = 'grey-8';
                     await store.dispatch('getHeroAction', this.input.search);
                     this.message.info = undefined;
                     this.heroes ? (this.message.error = undefined) : null;

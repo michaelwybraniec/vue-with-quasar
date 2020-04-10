@@ -3,8 +3,8 @@
         <q-card
             :style="
                 this.hero.favorite
-                    ? 'border: solid 0.12rem #1f4d7a; border-radius: 5px;'
-                    : 'border: solid 0.12rem white; border-radius: 5px;'
+                    ? 'border: solid 0.12rem #156fb3; border-radius: 1px;'
+                    : 'border: solid 0.12rem white; border-radius: 1px;'
             "
         >
             <q-card-section>
@@ -38,11 +38,12 @@
             </q-card-section>
 
             <q-img
+                @click="heroDetails = true"
                 :src="this.hero.image.url"
                 style="
                     height: 200px;
                     max-width: 210px;
-                    border-radius: 5px;
+                    border-radius: 2px;
                     margin: 8px;
                 "
                 placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
@@ -63,12 +64,14 @@
                 <q-btn
                     icon="favorite"
                     unelevated
+                    style=" border-radius: 2px;"
                     :color="this.hero.favorite ? 'negative' : 'primary'"
                     @click="onAddRemoveFavHero()"
                 />
                 <q-btn
                     icon="visibility"
                     unelevated
+                    style=" border-radius: 2px;"
                     color="primary"
                     @click="heroDetails = true"
                 />
@@ -83,8 +86,10 @@
                 <q-card-section class="q-pt-none">
                     <HeroDetails :hero="hero" />
                 </q-card-section>
-                <q-card-actions align="center" class="q-mb-md">
+                <q-card-actions align="right" class="q-mb-md q-pr-md">
                     <q-btn
+                        style=" border-radius: 2px;"
+                        unelevated
                         class="q-pa-ms"
                         label="OK"
                         color="primary"

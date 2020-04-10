@@ -1,71 +1,68 @@
 <template>
-    <q-layout view="lHh Lpr lFf">
-        <q-header flat class="bg-dark">
+    <q-layout view="hHh Lpr fFf" style="height: 300px" class="shadow-2">
+        <q-header elevated reveal class="bg-dark">
             <q-toolbar>
-                <q-btn
-                    flat
-                    dense
-                    round
-                    icon="menu"
-                    aria-label="Menu"
-                    @click="leftDrawerOpen = !leftDrawerOpen"
-                />
+                <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+
                 <div
-                    class="text-right fit col wrap justify-end items-start content-start q-px-lg q-pt-sm q-mb-md"
+                    class="text-right fit row wrap justify-end items-start content-start q-px-lg q-pt-sm  "
                 >
-                    <div class="text-h3">Heroes</div>
-                    <div class="text-subtitle2">
-                        A Quasar-With-Vue, Single-page, Mobile-ready WebApp.
+                    <div class="col-12 col-md-5 col-lg-8 q-pr-sm q-mt-sm">
+                        <img
+                            style="height: 40px; max-width: 400px"
+                            src="statics/icons/inova-heroes.png"
+                            alt="INOVA-HEROES."
+                        />
+                        <div style="color: #787878; font-size: 10px">
+                            A Quasar-with-vue framework, single-page,
+                            mobile-ready WebApp
+                        </div>
+                    </div>
+                    <div class="col-12  col-md-7 col-lg-4 q-pt-sm">
+                        <SearchBar />
                     </div>
                 </div>
             </q-toolbar>
         </q-header>
 
+        <q-footer flat reveal class="bg-dark">
+            <div class="q-pa-sm">Copyright © {{ todaysDate }} ver 2.0</div>
+        </q-footer>
+
         <q-drawer
-            v-model="leftDrawerOpen"
+            v-model="drawer"
             show-if-above
-            :width="250"
+            :mini="miniState"
+            @mouseover="miniState = false"
+            @mouseout="miniState = true"
+            mini-to-overlay
+            :width="200"
             :breakpoint="400"
+            bordered
+            content-class="bg-grey-4"
         >
-            <q-scroll-area
-                style="
-                    height: calc(100% - 95px);
-                    margin-top: 95px;
-                    border-right: 1px solid #ddd;
-                "
-            >
+            <q-scroll-area class="fit">
                 <q-list padding>
-                    <q-item-label header>Essential</q-item-label>
+                    <div v-for="linkObj in standardLinks" :key="linkObj.title">
+                        <q-separator v-if="linkObj.separator" />
+                        <StandardLink v-bind="linkObj" />
+                    </div>
+
+                    <q-separator />
 
                     <EssentialLink
                         v-for="linkObj in essentialLinks"
                         :key="linkObj.title"
                         v-bind="linkObj"
                     />
-
-                    <q-separator />
-
-                    <q-item-label header>App</q-item-label>
-
-                    <div v-for="linkObj in standardLinks" :key="linkObj.title">
-                        <q-separator v-if="linkObj.separator" />
-                        <StandardLink v-bind="linkObj" />
-                    </div>
                 </q-list>
             </q-scroll-area>
 
             <q-img
-                class="absolute-top avatar-image"
-                src="statics/black-square.jpg"
-                style="height: 95px;"
+                class="absolute-bottom avatar-image"
+                src="../statics/black-square.jpg"
+                style="height: 36px;"
             >
-                <div class="absolute-bottom bg-transparent">
-                    <q-avatar size="22px" class="q-mb-sm">
-                        <img src="statics/avatar.jpeg" />
-                    </q-avatar>
-                    <div class="text-weight-bold">Michael Wybraniec</div>
-                    <div style="font-size: 10px;">@michaelwybraniec</div>
-                </div>
             </q-img>
         </q-drawer>
 
@@ -81,23 +78,34 @@
 import { date } from 'quasar';
 import EssentialLink from '../components/EssentialLink';
 import StandardLink from '../components/StandardLink';
+import SearchBar from '../components/SearchBar';
 
 export default {
     name: 'MainLayout',
 
     components: {
+        StandardLink,
         EssentialLink,
-        StandardLink
+        SearchBar
     },
 
     data() {
         return {
-            leftDrawerOpen: false,
+            drawer: false,
+            miniState: true,
             essentialLinks: [
+                {
+                    title: 'BitBucket',
+                    caption: '/vue-with-quasar',
+                    icon: 'bitbucket',
+                    link:
+                        'https://bitbucket.org/michaelwybraniec/vue-with-quasar/src/master/',
+                    separator: false
+                },
                 {
                     title: 'Github',
                     caption: '/michaelwybraniec',
-                    icon: 'code',
+                    icon: 'github',
                     link: 'https://github.com/michaelwybraniec',
                     separator: false
                 },
@@ -112,12 +120,14 @@ export default {
             standardLinks: [
                 {
                     title: 'Search',
+                    //caption: 'by a letter or select one.',
                     icon: 'search',
                     link: '/',
                     separator: false
                 },
                 {
                     title: 'Favorites',
+                    //caption: 'list of your selection..',
                     icon: 'favorite',
                     link: '/favorites',
                     separator: false
@@ -128,7 +138,7 @@ export default {
     computed: {
         todaysDate() {
             let timeStamp = Date.now();
-            return date.formatDate(timeStamp, 'dddd D MMMM');
+            return date.formatDate(timeStamp, 'YYYY');
         }
     }
 };

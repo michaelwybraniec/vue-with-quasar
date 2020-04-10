@@ -1,60 +1,53 @@
 <template>
     <q-card
-        class="row q-pa-sm flex flex-center"
+        class="row  flex flex-center"
         :style="
             this.hero.favorite
-                ? 'background-color: #1f4d7a; border-radius: 6px;'
-                : 'background-color: #e8e8e8; border-radius: 6px;'
+                ? 'background-color: #156fb3; border-radius: 1px; padding: 5px'
+                : '; border-radius: 1px; padding: 5px'
         "
     >
-        <q-img
-            class="col-12 col-md-5 flex flex-center"
-            :src="this.hero.image.url"
-            placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
-            style="max-width: 720px; height: 368px; border-radius: 6px;"
-        >
-            <template v-slot:loading>
-                <div class="text-subtitle text-white">Loading...</div>
-            </template>
-            <template v-slot:error>
-                <div
-                    class="absolute-full flex flex-center bg-primary text-white"
-                >
-                    No image :-(
-                    <q-btn
-                        fab
-                        icon="favorite"
-                        glossy
-                        :color="this.hero.favorite ? 'negative' : 'primary'"
-                        @click="onAddRemoveFavHero()"
-                    />
-                </div>
-            </template>
-            <template>
-                <q-page-sticky style="border-radius: 6px;">
-                    <q-btn
-                        fab
-                        icon="favorite"
-                        :color="this.hero.favorite ? 'negative' : 'primary'"
-                        @click="onAddRemoveFavHero()"
-                    />
-                </q-page-sticky>
-            </template>
-        </q-img>
-
-        <q-card
-            class="col-12 col-md-7 flex-center q-pt-xl q-pb-xl"
-            style="border-radius: 6px;"
-        >
+        <q-card class="col-12" style=" border-radius:1px;">
             <div class="row">
-                <div class="col">
-                    <h4
-                        class="text-bold text-center"
-                        style="
-                            margin-block-start: 0.6em;
-                            margin-block-end: 0.7em;
-                        "
-                    >
+                <q-img
+                    class="col-12 col-md-5 "
+                    :src="this.hero.image.url"
+                    placeholder-src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F49.media.tumblr.com%2F6e286965a31b6bd600c4a6c83b63835f%2Ftumblr_ndz4z8v0mD1qj4315o1_500.gif&f=1&nofb=1"
+                    style=" height: 350px;"
+                >
+                    <template v-slot:loading>
+                        <div class="text-subtitle text-white">Loading...</div>
+                    </template>
+                    <template v-slot:error>
+                        <div
+                            class="absolute-full flex flex-center bg-primary text-white"
+                        >
+                            No image :-(
+                            <q-btn
+                                fab
+                                icon="favorite"
+                                :color="
+                                    this.hero.favorite ? 'negative' : 'primary'
+                                "
+                                @click="onAddRemoveFavHero()"
+                            />
+                        </div>
+                    </template>
+                    <template>
+                        <q-page-sticky style="border-radius: 1px;">
+                            <q-btn
+                                fab
+                                icon="favorite"
+                                :color="
+                                    this.hero.favorite ? 'negative' : 'primary'
+                                "
+                                @click="onAddRemoveFavHero()"
+                            />
+                        </q-page-sticky>
+                    </template>
+                </q-img>
+                <div class="col-12 col-md-7 q-pt-sm q-pb-sm flex-center">
+                    <h4 class="text-bold text-center">
                         {{ this.hero.name }}
                     </h4>
                     <div class="no-wrap text-center">
@@ -115,21 +108,21 @@
             </div>
         </q-card>
 
-        <q-card class="col q-pa-sm q-mt-sm" style="border-radius: 6px;">
+        <q-card class="col q-pa-sm">
             <div
-                v-for="(value, name, index) in hero"
+                v-for="(value, name, index) in this.hero"
                 v-bind:key="index + value + '-details'"
             >
                 <div
                     v-if="
                         index !== 0 &&
-                        name !== 'name' &&
-                        name !== 'id' &&
-                        name !== 'image' &&
-                        name !== 'liked' &&
-                        name !== 'powerstats' &&
-                        name !== 'favorite' &&
-                        name !== 'powerstars'
+                            name !== 'name' &&
+                            name !== 'id' &&
+                            name !== 'image' &&
+                            name !== 'liked' &&
+                            name !== 'powerstats' &&
+                            name !== 'favorite' &&
+                            name !== 'powerstars'
                     "
                     class="row"
                 >
@@ -160,7 +153,7 @@
                                 <div
                                     v-if="
                                         typeof value === 'string' ||
-                                        typeof value === 'number'
+                                            typeof value === 'number'
                                     "
                                     class="col-6 col-md-4"
                                 >

@@ -24,7 +24,7 @@ const state = () => ({
 const mutations = {
     [ADD_HERO](state, hero) {
         this.state.hero = hero;
-        const matchingHero = state.heroes.find((h) => h.id === hero.id);
+        const matchingHero = state.heroes.find(h => h.id === hero.id);
         if (!matchingHero) state.heroes.push(hero);
         //? pushing new hero.
         else state.heroes[matchingHero] = hero; //? updating existing hero.
@@ -37,10 +37,10 @@ const mutations = {
     },
     [ADD_REMOVE_FAV_HERO](state, favoriteHero) {
         function remove(array, element) {
-            return array.filter((el) => el.id !== element.id);
+            return array.filter(el => el.id !== element.id);
         }
         const matchingHero = state.favorite_heroes.find(
-            (h) => h.id === favoriteHero.id
+            h => h.id === favoriteHero.id
         );
         if (!matchingHero) {
             favoriteHero.favorite = true;
@@ -81,7 +81,7 @@ const actions = {
                     context.commit(API_ERROR, heroByName.data.error);
                     context.commit(CLEAR_HERO, undefined);
                 } else {
-                    heroByName.data.results.forEach((h) => {
+                    heroByName.data.results.forEach(h => {
                         h.favorite = !!dataService.favoriteHero(
                             h.id,
                             this.state
@@ -102,7 +102,7 @@ const actions = {
     },
     addRemoveFavHero(context, heroId) {
         const heroFound = context.state.favorite_heroes.find(
-            (h) => h.id === heroId
+            h => h.id === heroId
         );
         if (!heroFound) context.commit(ADD_REMOVE_FAV_HERO, heroId);
         else console.warn('addRemoveFavHero: HERO EXISTS!');
@@ -110,9 +110,9 @@ const actions = {
 };
 
 const getters = {
-    getAvailableHero: (state) => state.hero,
-    getApiErrorMsg: (state) => state.api_error,
-    getFavoriteHeroes: (state) => state.favorite_heroes
+    getAvailableHero: state => state.hero,
+    getApiErrorMsg: state => state.api_error,
+    getFavoriteHeroes: state => state.favorite_heroes
 };
 
 export default new Vuex.Store({
