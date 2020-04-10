@@ -16,19 +16,19 @@
 //     })
 // };
 
-const jsonToTable = (data) => {
+const jsonToTable = data => {
     //! solution to use shared utils to convert JSON to Quasar table
     console.log('shared => data.service.js => jsonToTable()', data);
 };
 
 const favoriteHero = (heroId, state) => {
-    return state.favorite_heroes.find((h) => {
+    return state.favorite_heroes.find(h => {
         if (h.id === heroId) return true;
         else false;
     });
 };
 
-const statsToStars = (powerstats) => {
+const statsToStars = powerstats => {
     let powerstars = [];
     let starValue = 100 / 6;
     let total = 0;

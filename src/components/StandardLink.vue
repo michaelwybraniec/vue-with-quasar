@@ -2,35 +2,38 @@
     <q-item clickable exact :to="link">
         <q-item-section v-if="icon" avatar>
             <q-icon :name="icon" />
+            <q-badge
+                v-if="title === 'Search' && hero.length"
+                align="middle"
+                color="white"
+                text-color="black"
+                floating
+            >
+                <b>
+                    {{ hero.length }}
+                </b>
+            </q-badge>
+
+            <q-badge
+                v-if="title === 'Favorites' && favoriteHeroes.length"
+                align="middle"
+                color="white"
+                text-color="black"
+                floating
+            >
+                <b>
+                    {{ favoriteHeroes.length }}
+                </b>
+            </q-badge>
         </q-item-section>
 
         <q-item-section>
             <q-item-label>
                 {{ title }}
-
-                <q-badge
-                    v-if="title === 'Search' && hero.length"
-                    align="middle"
-                    color="primary"
-                >
-                    <b>
-                        {{ hero.length }}
-                    </b>
-                </q-badge>
-
-                <q-badge
-                    v-if="title === 'Favorites' && favoriteHeroes.length"
-                    align="middle"
-                    color="primary"
-                >
-                    <b>
-                        {{ favoriteHeroes.length }}
-                    </b>
-                </q-badge>
             </q-item-label>
-            <!-- <q-item-label caption>
-        {{ caption }}
-      </q-item-label>-->
+            <div style="padding: 0; font-size: 10px; color: gray">
+                {{ caption }}
+            </div>
         </q-item-section>
     </q-item>
 </template>
