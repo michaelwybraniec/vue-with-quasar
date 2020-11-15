@@ -20,7 +20,7 @@ module.exports = function (ctx) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v4',
-      // 'fontawesome-v5',
+       'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
@@ -59,9 +59,9 @@ module.exports = function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       // rtl: false, // https://quasar.dev/options/rtl-support
-      // showProgress: false,
+       showProgress: false,
       // gzip: true,
-      // analyze: true,
+       analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override
       // preloadChunks: false,
@@ -84,7 +84,7 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
+      port: 8081,
       open: true // opens browser window automatically
     },
 
@@ -155,6 +155,7 @@ module.exports = function (ctx) {
       bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
+          platform: 'win32'
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
