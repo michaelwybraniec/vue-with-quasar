@@ -8,7 +8,7 @@
   "author": "Michael Wybraniec",
   "private": false,
   "scripts": {
-    "start": "quasar build",
+    "start": "quasar b",
     "dev": "quasar dev",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
